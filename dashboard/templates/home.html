@@ -121,7 +121,7 @@
                         </div>
                         <div style="  display: flex; width: 50%; justify-content: center;">
                            <div style=" display: flex;  justify-content: center;width:50%;  border-radius: 6px;">
-                              <img src="{% static 'icons/calibrado-error.svg' %}" style="height: 35px;  width: 27%;position:initial !important"> 
+                              <img src="{% static 'icons/calibrado-error.svg' %}" class="medir-button1" data-sensor='0' style="height: 35px;  width: 27%;position:initial !important"> 
                               <img src="{% static 'icons/calibrado-ok.svg' %}" style="height: 35px;  width: 27%;position:initial !important;display:none"
                            </div>
                            {% comment %} <span>Peso: <b style="color:#000">0,45%</b></span> {% endcomment %}
@@ -153,13 +153,13 @@
                      <div class="col-md-5" style="margin-top:5%;display:flex;flex-direction:row;flex-wrap:wrap">
                         <div style="  display: flex; width: 50%; justify-content: center;">
                            <div class="calibrar-button"  style=" display: flex;  justify-content: center;width:50%; border-radius: 6px;">
-                              <img src="{% static 'icons/tools_2.svg' %}" style="height: 37px; width: 27%;" data-sensor='1' id="calibrar-button"> 
+                              <img src="{% static 'icons/tools_2.svg' %}" style="height: 37px; width: 27%;" data-sensor='3' id="calibrar-button"> 
                            </div>
                            {% comment %} <span><b style="color:#000">Calibrar</b></span> {% endcomment %}
                         </div>
                         <div style="  display: flex; width: 50%; justify-content: center;">
                            <div style=" display: flex;  justify-content: center;width:50%;  border-radius: 6px;">
-                              <img src="{% static 'icons/calibrado-error.svg' %}" style="height: 35px;  width: 27%;position:initial !important"> 
+                              <img src="{% static 'icons/calibrado-error.svg' %}" data-sensor='1' style="height: 35px;  width: 27%;position:initial !important"> 
                               <img src="{% static 'icons/calibrado-ok.svg' %}" style="height: 35px;  width: 27%;position:initial !important;display:none"
                            </div>
                            {% comment %} <span>Peso: <b style="color:#000">0,45%</b></span> {% endcomment %}
@@ -527,6 +527,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
     
       <script>
 	  $('#calibrar-button').click(function(){
+                clearInterval(medicao);  
 		five_minutes = 5;
 		count= five_minutes;
 		soma = 0 ;
@@ -536,6 +537,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 		var calibrar = setInterval(function(){
 			if (count < 0){
 				clearInterval(calibrar);
+                                
 			}else{
 				
 				$.ajax({
@@ -549,7 +551,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						soma = soma + parseInt(resposta);
 						count= count - 1;
 						final = soma/five_minutes;
-						console.log(final);
+						console.log('sensor: '+sensor + '' +final);
 
 					}
 				});
@@ -559,7 +561,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 	  });
 
 	  $(document).ready(function() {
-		var g1 = new JustGage({
+		var g0 = new JustGage({
 				id: 'gauge1',
 				value: 0,
 				min: 0,
@@ -568,7 +570,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 				levelColorsGradient: true
 				
 			});
-		var g2 = new JustGage({
+		var g1 = new JustGage({
 				id: 'gauge2',
 				value: 0,
 				min: 0,
@@ -577,17 +579,23 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 				levelColorsGradient: true
 				
 			});
-		setInterval(function(){
+                
+                $('.medir-button1').click(function(){
+                                
+                    medicao  = setInterval(function(){
 			$.ajax({
-					type:"GET",
-					url:'{% url "medicao" %}',
-					success: function(resposta){
-						g1.refresh(parseFloat(resposta['g1']));
-						g2.refresh(parseFloat(resposta['g2']));
-					}
+                                type:"POST",
+                                url:'{% url "medicao" %}',
+                                
+                                success: function(resposta){
+                                     g0.refresh(resposta);
+                                                                          
+                                }
 			});
 			
-		}, 1000);
+                    }, 1000);
+                })
+		
 		
 		
 	   });

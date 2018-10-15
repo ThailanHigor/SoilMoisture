@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from gpiozero import MPC3008
+from gpiozero import MCP3008
 import random
-import time
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-SENSORES_PESOS = [0,0,0,0,0]
-SENSORES_PINOS = [2,3,4,5,7]
+SENSORES_PESOS = [0,0]
+SENSORES_PINOS = [0,3]
 
 def home(request):
+    SENSORES_PESOS[0] = MCP3008(0).value
+    SENSORES_PESOS[1] = MCP3008(2).value
     return render(request,'home.html')
 
 
@@ -18,21 +20,22 @@ def medir(valor,peso):
     x = (valor * 100) / float(peso)
     return x
 
+@csrf_exempt
 def medicao (request):
-    valor_medido = [0,0,0,0,0]
-    for i in SENSORES_PINOS:
-        higro = MCP3008(i)
-        peso = SENSORES_PESOS[i]
-        valor_medido[i] = medir(1 - higro.value,peso)
 
-    payload = {'g1':valor_medido[0],'g2': valor_medido[1], 'g3':valor_medido[2],'g4':valor_medido[3],'g5':valor_medido[4]}
-    return JsonResponse(payload)
+    higro = MCP3008(0)
+    #peso = SENSORES_PESOS[0]
+    #valor_medido = medir(1 - higro.value,peso)
+    #print(valor_medido)
+
+    return HttpResponse(1-higro.value)
 
 @csrf_exempt
 def calibrar(request):
     #pega os campos do ajax
     media = request.POST.get('media')
     sensor = int(request.POST.get('sensor'))
+    
 
     #realiza a leitura do sensor selecionado
     higro = MCP3008(sensor)
