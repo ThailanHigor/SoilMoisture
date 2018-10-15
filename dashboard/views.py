@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from gpiozero import MCP3008
+#from gpiozero import MCP3008
 import random
 
 from django.http import JsonResponse
@@ -11,8 +11,8 @@ SENSORES_PESOS = [0,0]
 SENSORES_PINOS = [0,3]
 
 def home(request):
-    SENSORES_PESOS[0] = MCP3008(0).value
-    SENSORES_PESOS[1] = MCP3008(2).value
+    #SENSORES_PESOS[0] = MCP3008(0).value
+    #SENSORES_PESOS[1] = MCP3008(2).value
     return render(request,'home.html')
 
 
@@ -23,12 +23,13 @@ def medir(valor,peso):
 @csrf_exempt
 def medicao (request):
 
-    higro = MCP3008(0)
+    #higro = MCP3008(0)
     #peso = SENSORES_PESOS[0]
     #valor_medido = medir(1 - higro.value,peso)
     #print(valor_medido)
+    valor = random.randint(0,100)
 
-    return HttpResponse(1-higro.value)
+    return HttpResponse(valor)
 
 @csrf_exempt
 def calibrar(request):
