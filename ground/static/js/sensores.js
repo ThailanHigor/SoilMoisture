@@ -152,7 +152,26 @@ $(document).ready(function() {
         }, 1000);
     })
  
+    //CALIBRAR DE CADA SENSOR
+    $('#calibrar-button1').click(function(){
+        console.log('calibrando1..')
 
+    })
+
+    $('#calibrar-button2').click(function(){
+        console.log('calibrando2..')
+
+    })
+
+    $('#calibrar-button3').click(function(){
+        console.log('calibrando3..')
+
+    })
+
+    $('#calibrar-button4').click(function(){
+        console.log('calibrando4..')
+
+    })
 
     $('.calibrar-button').click(function(){
         box = $(this).parent().parent().parent();
