@@ -183,20 +183,20 @@ $(document).ready(function() {
         count= minutes;
         soma = 0 ;
         final = 0;
-        sensor = 0;
-        $('.medicaosensor1').hide();
-        $('#calibrando1').show();
-        $('.ok_calib_1').show();
-        $('.error_calib_1').hide();
+        sensor = 1;
+        $('.medicaosensor2').hide();
+        $('#calibrando2').show();
+        $('.ok_calib_2').show();
+        $('.error_calib_2').hide();
 
         var calibrar = setInterval(function(){
         if (count < 0){
             clearInterval(calibrar);
 
-            $('.medicaosensor1').show();
-            $('#calibrando1').hide();
-            $('.ok_calib_1').show();
-            $('.error_calib_1').hide();
+            $('.medicaosensor2').show();
+            $('#calibrando2').hide();
+            $('.ok_calib_2').show();
+            $('.error_calib_2').hide();
             
             console.log('peso ajustado');
                  
@@ -214,7 +214,7 @@ $(document).ready(function() {
                     count= count - 1;
                     console.log('sensor: '+sensor );
                     final = parseFloat(resposta).toFixed(4);
-                    $('.peso_sensor_0').text(final);
+                    $('.peso_sensor_2').text(final);
 
                 }
             });
@@ -227,10 +227,97 @@ $(document).ready(function() {
     $('#calibrar-button3').click(function(){
         console.log('calibrando3..')
 
+        minutes = 10; //em segundos
+        count= minutes;
+        soma = 0 ;
+        final = 0;
+        sensor = 2;
+        $('.medicaosensor3').hide();
+        $('#calibrando3').show();
+        $('.ok_calib_3').show();
+        $('.error_calib_3').hide();
+
+        var calibrar = setInterval(function(){
+        if (count < 0){
+            clearInterval(calibrar);
+
+            $('.medicaosensor3').show();
+            $('#calibrando3').hide();
+            $('.ok_calib_3').show();
+            $('.error_calib_3').hide();
+            
+            console.log('peso ajustado');
+                 
+        }else{
+            
+            $.ajax({
+                type:"POST",
+                url:'/calibrar',
+                data: {
+                        'start' : soma,
+                        'sensor': sensor
+                        },
+                success: function(resposta){
+                    soma = soma + parseInt(resposta);
+                    count= count - 1;
+                    console.log('sensor: '+sensor );
+                    final = parseFloat(resposta).toFixed(4);
+                    $('.peso_sensor_3').text(final);
+
+                }
+            });
+        }
+
+        },1000);
+
     })
 
     $('#calibrar-button4').click(function(){
         console.log('calibrando4..')
+
+        minutes = 10; //em segundos
+        count= minutes;
+        soma = 0 ;
+        final = 0;
+        sensor = 3;
+        $('.medicaosensor4').hide();
+        $('#calibrando4').show();
+        $('.ok_calib_4').show();
+        $('.error_calib_4').hide();
+
+        var calibrar = setInterval(function(){
+        if (count < 0){
+            clearInterval(calibrar);
+
+            $('.medicaosensor4').show();
+            $('#calibrando4').hide();
+            $('.ok_calib_4').show();
+            $('.error_calib_4').hide();
+            
+            console.log('peso ajustado');
+                 
+        }else{
+            
+            $.ajax({
+                type:"POST",
+                url:'/calibrar',
+                data: {
+                        'start' : soma,
+                        'sensor': sensor
+                        },
+                success: function(resposta){
+                    soma = soma + parseInt(resposta);
+                    count= count - 1;
+                    console.log('sensor: '+sensor );
+                    final = parseFloat(resposta).toFixed(4);
+                    $('.peso_sensor_4').text(final);
+
+                }
+            });
+        }
+
+        },1000);
+
 
     })
 

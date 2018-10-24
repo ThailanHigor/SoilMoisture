@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-SENSORES_PESOS = [0.51,0.51]
-SENSORES_PINOS = [0,1]
+SENSORES_PESOS = [0.51,0.51],0.51,0.51]
+SENSORES_PINOS = [0,1,2,3]
 
 def home(request):
     #SENSORES_PESOS[0] = MCP3008(0).value
