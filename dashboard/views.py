@@ -48,7 +48,7 @@ def calibrar(request):
     higro = MCP3008(sensor)
     valor_medido = higro.value
     #atualiza valores dos pesos
-    SENSORES_PESOS[sensor] += float(valor_medido)
+    SENSORES_PESOS[sensor] = float(valor_medido)
     print(SENSORES_PESOS)
     return HttpResponse(valor_medido)
     
