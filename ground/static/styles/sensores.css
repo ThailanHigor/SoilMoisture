@@ -1,5 +1,6 @@
 .grafico{
     color: black;
+    padding-top:15px;
     }
 .esquerda{
     background:#FFF;
@@ -39,6 +40,7 @@
 
 .config-box-text{
     margin-left: 5px;
+    color: #50332a !important;
 }
 
 .config-box-icon{
@@ -58,4 +60,23 @@
 
 .spotlight img{
     cursor:pointer
+}
+.play-button{
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 0.5s;
+}
+.play-button:hover{
+     width: 45px !important;
+     
+}
+
+.calibrar-button-efeito{
+
+     -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 0.5s;
+}
+
+.calibrar-button-efeito:hover{
+    width: 37px !important;
+     
 }
