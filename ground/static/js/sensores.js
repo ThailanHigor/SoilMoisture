@@ -1,38 +1,4 @@
 
-$('#calibrar-button').click(function(){
-    clearInterval(medicao);  
-    five_minutes = 5;
-    count= five_minutes;
-    soma = 0 ;
-    final = 0;
-    sensor = $(this).attr('data-sensor');
-
-    var calibrar = setInterval(function(){
-    if (count < 0){
-        clearInterval(calibrar);
-                        
-    }else{
-        
-        $.ajax({
-            type:"POST",
-            url:'{% url "calibrar" %}',
-            data: {
-                    'media': final,
-                    'sensor': sensor
-                    },
-            success: function(resposta){
-                soma = soma + parseInt(resposta);
-                count= count - 1;
-                final = soma/five_minutes;
-                console.log('sensor: '+sensor + '' +final);
-
-            }
-        });
-    }
-
-    },1000);
-    });
-
 $(document).ready(function() {
     var g1 = new JustGage({
         id: 'gauge1',
@@ -77,7 +43,9 @@ $(document).ready(function() {
          $.ajax({
              type:"POST",
              url: '/medicao',
-            
+             data: {
+                    'sensor': 0
+                    },   
              success: function(resposta){
                 g1.refresh(resposta);
                                                    
@@ -97,7 +65,9 @@ $(document).ready(function() {
          $.ajax({
              type:"POST",
              url: '/medicao',
-            
+            data: {
+                    'sensor': 1
+                    },   
              success: function(resposta){
                 g2.refresh(resposta);
                                                    
@@ -108,7 +78,7 @@ $(document).ready(function() {
     
         });
 
-        }, 1000);
+        }, 2000);
     })
 
     //UM BOTAO PARA CADA SENSOR
@@ -117,7 +87,9 @@ $(document).ready(function() {
          $.ajax({
              type:"POST",
              url: '/medicao',
-            
+             data: {
+                    'sensor': 2
+                    },    
              success: function(resposta){
                 g3.refresh(resposta);
                                                    
@@ -128,7 +100,7 @@ $(document).ready(function() {
     
         });
 
-        }, 1000);
+        }, 3000);
     })
 
 
@@ -138,7 +110,9 @@ $(document).ready(function() {
          $.ajax({
              type:"POST",
              url: '/medicao',
-            
+             data: {
+                    'sensor': 3
+                    }, 
              success: function(resposta){
                 g4.refresh(resposta);
                                                    
@@ -149,12 +123,64 @@ $(document).ready(function() {
     
         });
 
-        }, 1000);
+        }, 4000);
     })
  
     //CALIBRAR DE CADA SENSOR
     $('#calibrar-button1').click(function(){
         console.log('calibrando1..')
+        
+        minutes = 600; //em segundos
+        count= minutes;
+        soma = 0 ;
+        final = 0;
+        sensor = 0;
+
+        var calibrar = setInterval(function(){
+        if (count < 0){
+            clearInterval(calibrar);
+            $.ajax({
+                type:"POST",
+                url:'/calcula_peso',
+                data: {
+                        'divisor' : minutes,
+                        'sensor': sensor
+                        },
+                success: function(resposta){
+                    console.log(resposta);
+                    if(resposta == "sucesso"){
+                        $('.medicaosensor1').show();
+                        $('#calibrando1').hide();
+                        $('.ok_calib_1').show();
+                        $('.error_calib_1').hide();
+                        
+                        console.log('peso ajustado');
+                    }
+                    
+                }
+            });
+                            
+        }else{
+            
+            $.ajax({
+                type:"POST",
+                url:'/calibrar',
+                data: {
+                        'start' : soma,
+                        'sensor': sensor
+                        },
+                success: function(resposta){
+                    soma = soma + parseInt(resposta);
+                    count= count - 1;
+                    console.log('sensor: '+sensor );
+                    final = parseFloat(resposta).toFixed(4);
+                    $('.peso_sensor_0').text(final);
+
+                }
+            });
+        }
+
+        },1000);
 
     })
 
